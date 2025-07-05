@@ -1,0 +1,56 @@
+type Item @model {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+}
+
+type Attendant @model {
+  id: ID!
+  name: String!
+  email: AWSEmail!
+}
+
+type StockMovement @model {
+  id: ID!
+  date: AWSDate!
+  itemId: ID! @index(name: "byItem")
+  item: Item @belongsTo(fields: ["itemId"])
+  quantity: Int!
+  movementType: String!  # OPENING, SUPPLY, SALE, ADJUSTMENT
+}
+
+type Sale @model {
+  id: ID!
+  date: AWSDate!
+  itemId: ID! @index(name: "byItem")
+  item: Item @belongsTo(fields: ["itemId"])
+  attendantId: ID! @index(name: "byAttendant")
+  attendant: Attendant @belongsTo(fields: ["attendantId"])
+  quantity: Int!
+  amount: Float!
+}
+
+type DailySummary @model {
+  id: ID!
+  date: AWSDate!
+  openingStock: [ItemStock]!
+  suppliedStock: [ItemStock]!
+  sales: [SaleSummary]!
+  totalIncome: Float!
+}
+
+type ItemStock {
+  itemId: ID!
+  itemName: String!
+  quantity: Int!
+}
+
+type SaleSummary {
+  itemId: ID!
+  itemName: String!
+  quantity: Int!
+  amount: Float!
+  attendantId: ID!
+  attendantName: String!
+}
