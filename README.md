@@ -1,2 +1,2 @@
 # Front-End-Using-React-
-This Project was deployed Using AWS Amplify 
+This is a project to be deployed using AWS Amplify 
